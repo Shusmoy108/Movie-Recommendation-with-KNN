@@ -79,7 +79,12 @@ def findmoviename(movieId,df):
 
 def findmovieId(title,df):
     id=df[df['title'].str.contains(title, na=False,  case=False)]
-    return id['movieId'].values[0]
+    movieId=-1
+    for i in range (id['title'].size):
+        name=" ".join(id['title'].values[i].split(" ")[0:len(id['title'].values[i].split(" "))-1 ])
+        if(name.lower()==title.lower()):
+            movieId=id['movieId'].values[i]
+    return movieId
 
 def eucledianDistance(point1, point2):
     sum=0
@@ -117,14 +122,21 @@ def KNN(testdata,traindata,k):
 
 def main():
     data= loaddata()
-    name=input("Enter Your Movie Name : ")
-    movieId=findmovieId(name,data)
     train_data=dataprocessing(data)
-    test_data=findtestpoint(movieId,train_data)
-    recommend=KNN(test_data,train_data,10)
-    print("Recommended Movies : ")
-    for i in range(len(recommend)):
-        print(f"{'%3d' %(i+1)}: {findmoviename(recommend[i],data)}")       
+    while(True):
+        print("Press Q/q to quit")
+        name=input("Enter Your Movie Name : ")
+        if(name=='Q' or name=='q'):
+            break;
+        movieId=findmovieId(name,data)
+        if(movieId==-1):
+            print("Can not suggest any movie for this movie")
+            continue
+        test_data=findtestpoint(movieId,train_data)
+        recommend=KNN(test_data,train_data,10)
+        print("Recommended Movies : ")
+        for i in range(len(recommend)):
+            print(f"{'%3d' %(i+1)}: {findmoviename(recommend[i],data)}")       
 
 
 main()
