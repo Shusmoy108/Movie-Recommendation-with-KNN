@@ -87,6 +87,13 @@ def eucledianDistance(point1, point2):
         sum= sum + (point1[i]-point2[i])**2
     return math.sqrt(sum)
 
+def weightedeucledianDistance(point1, point2):
+    sum=0
+    for i in range (len(point1)-3):
+        sum= sum + ((point1[i]-point2[i])**2)*2
+    sum= sum + ((point1[i+1]-point2[i])**2)*1
+    sum= sum + ((point1[i+2]-point2[i])**2)*1
+    return math.sqrt(sum)
 def getNeighbours(testpoint, traindata, index):
     mn=99999
     lb=-1
