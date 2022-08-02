@@ -95,16 +95,24 @@ def eucledianDistance(point1, point2):
 def weightedeucledianDistance(point1, point2):
     sum=0
     for i in range (len(point1)-3):
-        sum= sum + ((point1[i]-point2[i])**2)*2
-    sum= sum + ((point1[i+1]-point2[i])**2)*1
-    sum= sum + ((point1[i+2]-point2[i])**2)*1
+        sum= sum + ((point1[i]-point2[i])**2)
+    #sum=sum*2
+    sum= sum + ((point1[i+1]-point2[i+1])**2)*1
+    sum= sum + ((point1[i+2]-point2[i+2])**2)*1
     return math.sqrt(sum)
+    """
+    sump=((point1[i+1]-point2[i+1])**2)*1 + ((point1[i+2]-point2[i+2])**2)*1
+    if(sum>sump):
+        return math.sqrt(sum)
+    else:
+        return math.sqrt(sump)
+    """
 def getNeighbours(testpoint, traindata, index):
     mn=99999
     lb=-1
     idx=-1
     for i in range (len(traindata)):
-        dist=eucledianDistance(testpoint,traindata[i])
+        dist=weightedeucledianDistance(testpoint,traindata[i])
         if(mn>dist and (i not in index) and(traindata[i][19]!=testpoint[19])):
             mn=dist
             idx=i
