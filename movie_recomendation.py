@@ -92,11 +92,26 @@ def eucledianDistance(point1, point2):
         sum= sum + (point1[i]-point2[i])**2
     return math.sqrt(sum)
 
-def weightedeucledianDistance(point1, point2):
+def popularitybasedeucledianDistance(point1, point2):
     sum=0
     for i in range (len(point1)-3):
         sum= sum + ((point1[i]-point2[i])**2)
     #sum=sum*2
+    sum= sum + ((point1[i+1]-point2[i+1])**2)*2
+    sum= sum + ((point1[i+2]-point2[i+2])**2)*2
+    return math.sqrt(sum)
+    """
+    sump=((point1[i+1]-point2[i+1])**2)*1 + ((point1[i+2]-point2[i+2])**2)*1
+    if(sum>sump):
+        return math.sqrt(sum)
+    else:
+        return math.sqrt(sump)
+    """
+def genrebasedeucledianDistance(point1, point2):
+    sum=0
+    for i in range (len(point1)-3):
+        sum= sum + ((point1[i]-point2[i])**2)
+    sum=sum*2
     sum= sum + ((point1[i+1]-point2[i+1])**2)*1
     sum= sum + ((point1[i+2]-point2[i+2])**2)*1
     return math.sqrt(sum)
@@ -107,12 +122,24 @@ def weightedeucledianDistance(point1, point2):
     else:
         return math.sqrt(sump)
     """
+def maxedeucledianDistance(point1, point2):
+    sum=0
+    for i in range (len(point1)-3):
+        sum= sum + ((point1[i]-point2[i])**2)
+    sum= sum + ((point1[i+1]-point2[i+1])**2)*1
+    sum= sum + ((point1[i+2]-point2[i+2])**2)*1
+    sump=((point1[i+1]-point2[i+1])**2)*1 + ((point1[i+2]-point2[i+2])**2)*1
+    if(sum>sump):
+        return math.sqrt(sum)
+    else:
+        return math.sqrt(sump)
+    
 def getNeighbours(testpoint, traindata, index):
     mn=99999
     lb=-1
     idx=-1
     for i in range (len(traindata)):
-        dist=weightedeucledianDistance(testpoint,traindata[i])
+        dist=maxedeucledianDistance(testpoint,traindata[i])
         if(mn>dist and (i not in index) and(traindata[i][19]!=testpoint[19])):
             mn=dist
             idx=i
@@ -132,7 +159,7 @@ def main():
     data= loaddata()
     train_data=dataprocessing(data)
     while(True):
-        print("Press Q/q to quit")
+        #print("Press Q/q to quit")
         name=input("Enter Your Movie Name : ")
         if(name=='Q' or name=='q'):
             break;
@@ -144,7 +171,8 @@ def main():
         recommend=KNN(test_data,train_data,10)
         print("Recommended Movies : ")
         for i in range(len(recommend)):
-            print(f"{'%3d' %(i+1)}: {findmoviename(recommend[i],data)}")       
+            print(f"{'%3d' %(i+1)}: {findmoviename(recommend[i],data)}")
+        break
 
 
 main()
